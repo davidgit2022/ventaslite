@@ -63,13 +63,12 @@ class CategoriesComponent extends Component
             'name' => $this->name
         ]);
 
-
         $customFileName;
 
         if ($this->image)
         {
             $customFileName = uniqid() . '_.' . $this->image->extension();
-            $this->image->storeAs('storage/categories', $customFileName);
+            $this->image->storeAs('public/categories', $customFileName);
             $category->image = $customFileName;
             $category->save();
         }
@@ -136,9 +135,9 @@ class CategoriesComponent extends Component
         'deleteRow' => 'destroy'
     ];
 
-    public function destroy($id)
+    public function destroy(Category $category)
     {
-        $category = Category::find($id);
+        //$category = Category::find($id);
         $imageName = $category->image; //imagen temporal
         $category->delete();
 

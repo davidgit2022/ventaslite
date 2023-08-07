@@ -10,7 +10,7 @@ class SaleDatails extends Model
     use HasFactory;
 
     protected $fillable = [
-        'prince',
+        'price',
         'quantity',
         'product_id',
         'sale_id'

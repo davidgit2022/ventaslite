@@ -26,7 +26,7 @@
             <label class="custom-file-label">Imàgen{{$image}}</label>
         </div>
         @error('image')
-            <span class="text-danger">{{$message}}</span>
+            <span class="text-danger er">{{$message}}</span>
         @enderror
     </div>
 </div>

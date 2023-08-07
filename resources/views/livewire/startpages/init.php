@@ -63,7 +63,7 @@
                             endforeach
                         </tbody>
                     </table>
-                    pagination
+                    Pagination
                 </div>
             </div>
         </div>
@@ -72,5 +72,6 @@
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function(){
+        
     });
 </script>

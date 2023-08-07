@@ -18,7 +18,7 @@
                     <table class="table table-bordered striped mt-1">
                         <thead class="text-white" style="background: #3B3F5C">
                             <tr>
-                                <th class="table-th text-white">TIPO</th>
+                                <th class="table-th">TIPO</th>
                                 <th class="table-th text-white">VALOR</th>
                                 <th class="table-th text-white">IMAGEN</th>
                                 <th class="table-th text-white">ACCIÓN</th>
@@ -97,7 +97,8 @@
         window.livewire.on('modal-hide', msg => {
             $('#theMOdal').modal('hide')
         });
-        $('#theModal').on('hidden.bs.modal', function() {
+
+        $('#theModal').on('hidden.bs.modal', function(e) {
             $('.er').css('display','none')
         });
 

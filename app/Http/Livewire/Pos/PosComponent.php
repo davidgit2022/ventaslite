@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Models\Product;
 use Livewire\Component;
 use App\Models\Denomination;
 use Illuminate\Support\Facades\DB;
@@ -15,8 +16,10 @@ class PosComponent extends Component
     {
         $this->efectivo = 0;
         $this->change = 0;
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
+        /* $this->total = Cart::getTotal();
+        $this->itemsQuantity = Cart::getTotalQuantity(); */
+        $this->total = 100000;
+        $this->itemsQuantity = 1;
     }
 
     public function render()

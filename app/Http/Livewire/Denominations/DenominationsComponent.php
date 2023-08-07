@@ -56,7 +56,7 @@ class DenominationsComponent extends Component
             'type.required' => 'El tipo es requerido',
             'type.not_in' => 'Elige un valor distinto para Elegir',
             'value.required' => 'El valor es requerido',
-            'value.uniqe' => 'Ya existe el valor',
+            'value.unique' => 'Ya existe el valor',
         ];
 
         $this->validate($rules, $messages);
@@ -86,7 +86,6 @@ class DenominationsComponent extends Component
 
         $this->type = $denomination->type;
         $this->value = $denomination->value;
-        $this->name = $denomination->name;
         $this->selected_id = $denomination->id;
         $this->image = null;
 
@@ -104,7 +103,7 @@ class DenominationsComponent extends Component
             'type.required' => 'El tipo es requerido',
             'type.not_in' => 'Elige un valor distinto para Elegir',
             'value.required' => 'El valor es requerido',
-            'value.uniqe' => 'Ya existe el valor',
+            'value.unique' => 'Ya existe el valor',
         ];
 
         $this->validate($rules, $messages);
