@@ -14,4 +14,10 @@
         </div>
     </div>
 </div>
-<script></script>
+
+<script src="{{ asset('js/keypress.js')}}"></script>
+<script src="{{ asset('js/onscan.min.js')}}"></script>
+@include('livewire.pos.scripts.events')
+@include('livewire.pos.scripts.general')
+@include('livewire.pos.scripts.scan')
+@include('livewire.pos.scripts.shortcuts')

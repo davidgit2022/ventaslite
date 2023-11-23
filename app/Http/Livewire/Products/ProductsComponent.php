@@ -203,7 +203,7 @@ class ProductsComponent extends Component
         }
 
         $this->resetUI();
-        $this->emit('product-deleted', 'Producto Elimiado');
+        $this->emit('product-deleted', 'Producto Eliminado');
     }
 
     public function resetUI()

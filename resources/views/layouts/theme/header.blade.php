@@ -20,9 +20,8 @@
                 <line x1="3" y1="12" x2="3" y2="12"></line>
                 <line x1="3" y1="18" x2="3" y2="18"></line>
             </svg></a>
-
-        {{-- <livewire:search-component> --}}
-        @include('livewire.search.search-component')
+        <livewire:search.search-component>
+        {{-- @livewire('Search-Component') --}}
         <ul class="navbar-item flex-row navbar-dropdown">
 
 

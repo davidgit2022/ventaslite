@@ -8,7 +8,7 @@
         </svg>
         <form class="form-inline search-full form-inline search" role="search">
             <div class="search-bar">
-                <input id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code', $('#code').val())"wire:mode="search"
+                <input id="code" type="text" wire:keydown.enter.prevent="$emit('scan-code', $('#code').val())" wire:model='search'
                     class="form-control search-form-control ml-lg-auto" placeholder="Search...">
             </div>
         </form>
@@ -16,7 +16,7 @@
 </ul>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        livewire.on('scan-code', action => {
+        window.livewire.on('scan-code', action => {
             $('#code').val('')
         });
     });

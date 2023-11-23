@@ -4,7 +4,8 @@
             noty(Msg)
         })
         windown.livewire.on('scan-notfound', Msg =>{
-            noty(Msg,2)
+            alert('fdgfdg')
+            noty(Msg, 2)
         })
         windown.livewire.on('no-stock', Msg => {
             noty(Msg,2)

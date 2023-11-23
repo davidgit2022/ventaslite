@@ -18,7 +18,7 @@
                 <div class="card simple-title-task ui-sortable-handle">
                     <div class="card-body">
                         <div class="input-group input-group-md mb-3">
-                            <div class="input-group-prepend">
+                            <div class="input-group-prepend" style="width: 95px">
                                 <span class="input-group-text input-gp hideonsm"
                                     style="background: #3b3f5c; color:white">EFECTIVO F8</span>
                             </div>

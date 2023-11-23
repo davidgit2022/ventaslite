@@ -2,11 +2,16 @@
 
 namespace App\Http\Livewire\Pos;
 
+use App\Models\Sale;
 use App\Models\Product;
 use Livewire\Component;
+use App\Models\SaleDetail;
+use App\Models\SaleDatails;
 use App\Models\Denomination;
 use Illuminate\Support\Facades\DB;
-use Darryldecode\Cart\Facades\CartFacade as Cart;
+use Illuminate\Support\Facades\Redirect;
+use Gloudemans\Shoppingcart\Facades\Cart;
+
 
 class PosComponent extends Component
 {
@@ -16,20 +21,20 @@ class PosComponent extends Component
     {
         $this->efectivo = 0;
         $this->change = 0;
-        /* $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity(); */
-        $this->total = 100000;
-        $this->itemsQuantity = 1;
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
+        $this->total = 10000;
+        $this->itemsQuantity = 2;
     }
 
     public function render()
     {
-        return view('livewire.pos.pos-component',[
-            'denominations' => Denomination::orderBy('value','desc')->get(),
-            'cart' => Cart::getContent()->sortBy('name')
+        return view('livewire.pos.pos-component', [
+            'denominations' => Denomination::orderBy('value', 'desc')->get(),
+            'cart' => Cart::content()->sortBy('name')
         ])
-        ->extends('layouts.theme.app')
-        ->section('content');
+            ->extends('layouts.theme.app')
+            ->section('content');
     }
 
     public function ACash($value)
@@ -47,70 +52,61 @@ class PosComponent extends Component
 
     public function ScanCode($barcode, $cant = 1)
     {
-        dd($barcode);
         $product = Product::where('barcode', $barcode)->first();
-        if ($product == null || empty($empty))
-        {
-            $this->emit('scan-notfound','El producto no está registrado');
-        } else
-        {
-            if ($this->InCart($product->id))
-            {
+        if ($product == null || empty($empty)) {
+            
+            $this->emit('scan-notfound', 'El producto no está registrado');
+            dd($product);
+        } else {
+            if ($this->InCart($product->id)) {
                 $this->increaseQty($product->id);
                 return;
             }
-            if ($product->stock < 1)
-            {
-                $this->emit('no-stock','Stock insuficiente :/');
+            if ($product->stock < 1) {
+                $this->emit('no-stock', 'Stock insuficiente :/');
             }
 
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-            $this->total = Cart::getTotal();
+            Cart::add($product->id, $product->name, $cant, $product->price, $product->image);
+            $this->total = Cart::total();
 
-            $this->emit('scan-ok','Producto agregado');
+            $this->emit('scan-ok', 'Producto agregado');
         }
-
     }
 
     public function InCart($productId)
     {
         $exist = Cart::get($productId);
-        if ($exist)
-        {
+        if ($exist) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
 
-    public function increaseQty($productId, $cant=1)
+    public function increaseQty($productId, $cant = 1)
     {
         $title = '';
         $product = Product::find($productId);
         $exist = Cart::get($productId);
 
-        if ($exist)
-        {
+        if ($exist) {
             $title = 'Cantidad actualizada';
-        }
-        else {
+        } else {
             $title = 'Producto agregado';
         }
-        if ($exist)
-        {
-            if ($product->stock < ($cant + $exist->quantity))
-            {
-                $this->emit('no-stock','Stock insuficiente :/');
+        if ($exist) {
+            if ($product->stock < ($cant + $exist->quantity)) {
+                $this->emit('no-stock', 'Stock insuficiente :/');
                 return;
             }
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
-
-            $this->total = Cart::getTotal();
-            $this->itemsQuantity = Cart::getTotalQuantity();
-
-            $this->emit('scan-ok', $title);
         }
+
+        Cart::add($product->id, $product->name, $cant, $product->price,  $product->image);
+
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
+
+        $this->emit('scan-ok', $title);
     }
 
     public function updateQty($productId, $cant=1)
@@ -140,10 +136,10 @@ class PosComponent extends Component
 
         if($cant > 0)
         {
-            Cart::add($product->id, $product->name, $product->price, $cant, $product->image);
+            Cart::add($product->id, $product->name, $cant, $product->price,  $product->image);
 
-            $this->total = Cart::getTotal();
-            $this->itemsQuantity = Cart::getTotalQuantity();
+            $this->total = Cart::total();
+            $this->itemsQuantity = Cart::count();
 
             $this->emit('scan-ok', $title);
         }
@@ -156,8 +152,8 @@ class PosComponent extends Component
     {
         Cart::remove($productId);
 
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
 
         $this->emit('scan-ok', 'Producto eliminado');
     }
@@ -171,11 +167,11 @@ class PosComponent extends Component
 
         if ($newQty > 0)
         {
-            Cart::add($item->id, $item->name, $item->price, $newQty, $item->attributes[0]);
+            Cart::add($item->id, $item->name, $newQty, $item->price,  $item->attributes[0]);
         }
 
-        $this->total = Cart::getTotal();
-        $this->itemsQuantity = Cart::getTotalQuantity();
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
 
         $this->emit('scan-ok', 'Cantidad actualizada');
     }
@@ -184,9 +180,9 @@ class PosComponent extends Component
     {
         Cart::clear();
         $this->efectivo = 0;
-        $this->chagen = 0;
-        $this->total = Cart::getTotal();
-        $this->itemsQuatity = Cart::getTotalQuantity();
+        $this->change = 0;
+        $this->total = Cart::total();
+        $this->itemsQuantity = Cart::count();
 
         $this->emit('scan-ok', 'Carrito vacio');
     }
@@ -222,7 +218,7 @@ class PosComponent extends Component
 
             if ($sale)
             {
-                $items = Cart::getContent();
+                $items = Cart::content();
                 foreach ($items as $item)
                 {
                     SaleDetail::create([
@@ -239,15 +235,16 @@ class PosComponent extends Component
                     $product->save();
                 }
 
-                DB::commit();
+            }
+
+            DB::commit();
 
                 Cart::clear();
                 $this->efectivo = 0;
                 $this->change = 0;
-                $this->total = Cart::getTotalQuantity();
+                $this->total = Cart::count();
                 $this->emit('sale-ok', 'Venta registrada con éxito');
                 $this->emit('print-ticket', $sale->id);
-            }
 
         } catch (Exception $e)
         {
@@ -260,10 +257,4 @@ class PosComponent extends Component
     {
         return Redirect::to("print://$sale->id");
     }
-
-
-
-
-
-
 }

@@ -1,21 +1,18 @@
 <script>
     try {
         onScan.attachTo(document, {
-        suffixKeyCodes: [13],
-        onScan: function (barcode) {
-            console.log(barcode)
-            window.livewire.emit('scan-code', barcode)
-        },
-        onScanError: function (e) {
-            console.log(e)
-        }
-    })
+            suffixKeyCodes: [13],
+            onScan: function(barcode) {
+                console.log(barcode)
+                window.livewire.emit('scan-code', barcode)
+            },
+            onScanError: function(e) {
+                console.log(e)
+            }
+        })
 
         console.log('Scanner ready!')
-    } catch (e)
-    {
+    } catch (e) {
         console.log('Error de la lectura: ', e)
     }
-
-
 </script>
